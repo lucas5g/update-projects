@@ -81,7 +81,7 @@ def builds(accessToken, project):
 def main():
 
     if len(argv) < 3:
-        print('\nEscolha as opções: web, app ou all\n\nEx: python update servicos app. \n')
+        print('\nEscolha as opções: web, app ou all\n\nEx: python update ' + argv[1] + ' app. \n')
         return 
         
     project=argv[1]
