@@ -1,0 +1,13 @@
+{
+  "name": "update-projects",
+  "version": "1.0.0",
+  "description": "Ferramento para atualizar todos os clientes web e android. ##",
+  "main": "index.js",
+  "scripts": {
+    "dev":"upload.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
