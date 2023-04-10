@@ -7,6 +7,10 @@ Ferramento para atualizar todos os clientes web e android.
 cp .env-exemplo .env
 ```
 No arquivo .env, lembre de alterar os valores das variáveis.
+
+# Requisitos
+Node >= 16 
+
 # Instalação dos módulos
 ```
   npm install 

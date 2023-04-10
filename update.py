@@ -25,7 +25,12 @@ def updateWeb(accessToken, project):
 
     print('Atualização web\n')
     for web in webs:
-        page = requests.get(web['link'])
+        if project == 'entregas':
+            page = requests.get(web['link'] + '/version')
+        else:
+            page = requests.get(web['link'] + '/version')
+
+
         soup = bs(page.content, 'html.parser')
 
         if  project == 'marketplace':
@@ -33,6 +38,9 @@ def updateWeb(accessToken, project):
 
         if project == 'servicos':
             lastTagPage = soup.find('strong').text
+
+        if project == 'entregas':
+            lastTagPage = soup.text 
 
         if(lastTagPage == web['lastTag']):
             print(web['name'] + ' já foi atualizado na versão ' + lastTagPage)
@@ -69,4 +77,4 @@ def builds(accessToken, project):
 accessToken = login()
 
 updateWeb(accessToken, argv[1])
-builds(accessToken, argv[1])
+# builds(accessToken, argv[1])
