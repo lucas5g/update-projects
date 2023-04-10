@@ -19,5 +19,5 @@ Node >= 16
 # Atualizar um projeto específico
 
 ```
-python3 update.py servicos 
+python3 update.py servicos all
 ```

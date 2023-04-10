@@ -23,7 +23,9 @@ def updateWeb(accessToken, project):
     command = res.json()
     webs = command['web']
 
-    print('Atualização web\n')
+    if len(webs) > 0:        
+        print('Atualização web\n')
+
     for web in webs:
         if project == 'entregas':
             page = requests.get(web['link'] + '/version')
@@ -49,11 +51,13 @@ def updateWeb(accessToken, project):
     return
 
 def builds(accessToken, project):
+    print('Buildando apps')
     Headers = {"Authorization": "Bearer "+accessToken}
     res = requests.get(url + "/clients/pendents/" + project, headers=Headers)
     command = res.json()
     clientsUser = command['androidUser']
     clientsProvider = command['androidProvider']
+
     for client in clientsUser:
         if os.path.exists(os.path.expanduser('~') + client['pathApp']):
             print(client['name'] + ' ' + client['lastTagUser'] + ' já foi buildado :)')
@@ -74,7 +78,27 @@ def builds(accessToken, project):
     # os.system('node apps-upload.mjs ' + clients[0]['lastTagUser'])
     
 
-accessToken = login()
+def main():
 
-updateWeb(accessToken, argv[1])
-builds(accessToken, argv[1])
+    if len(argv) < 3:
+        print('\nEscolha as opções: web, app ou all\n\nEx: python update servicos app. \n')
+        return 
+        
+    project=argv[1]
+    platform=argv[2]
+    accessToken = login()
+
+    if platform == 'web':
+        updateWeb(accessToken, project)
+        return
+    if platform == 'app':
+        builds(accessToken, project)
+        return
+    if platform == 'all':
+        builds(accessToken, project)
+        updateWeb(accessToken, project)
+        return
+    
+    print('Escolha as opções web, app ou all\n')
+    
+main()
