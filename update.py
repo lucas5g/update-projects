@@ -77,4 +77,4 @@ def builds(accessToken, project):
 accessToken = login()
 
 updateWeb(accessToken, argv[1])
-# builds(accessToken, argv[1])
+builds(accessToken, argv[1])
