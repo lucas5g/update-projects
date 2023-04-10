@@ -4,6 +4,7 @@ import path from 'path'
 import os from 'os'
 import fs from 'fs'
 import 'dotenv/config'
+import { login } from './login.mjs'
 
 const sleep = ms => new Promise(res => setTimeout(res, ms))
 
@@ -26,14 +27,12 @@ let cookies = [];
       Authorization: `Bearer ${data.accessToken}`
     }
   })
-  console.log('EMAIL', process.env.EMAIL)
-  console.log('PASSWORD', process.env.PASSWORD)
-
 
   if (!project) {
     return console.log('Preencha a variável project')
   }
-  cookies = await loginGooglePlayConsole()
+  // cookies = await loginGooglePlayConsole()
+  cookies = login
 
   const clientsUser = command.androidUser
   const clientsProvider = command.androidProvider
@@ -76,7 +75,7 @@ async function loginGooglePlayConsole() {
 
   await page.goto('https://play.google.com/console/signup');
 
-  await page.type('#identifierId', process.env.EMAIL)
+  await page.type('#identifierId', process.env.MOBILE_USERNAME)
 
   await page.$x('//*[@id="identifierNext"]/div/button/span')
     .then(res => res[0].click())
@@ -84,7 +83,7 @@ async function loginGooglePlayConsole() {
   await sleep(3000)
   // await page.waitForTimeout(2000)
   await page.waitForSelector('input[type="password"]')
-  await page.type('input[type="password"]', process.env.PASSWORD)
+  await page.type('input[type="password"]', process.env.MOBILE_PASSWORD)
 
   await sleep(1000)
   // await page.waitForTimeout(50000)
@@ -97,7 +96,7 @@ async function loginGooglePlayConsole() {
   const cookies = await page.cookies()
   await browser.close()
 
-  // console.log(cookies)
+  console.log(cookies)
   return cookies
 
 }
@@ -105,10 +104,10 @@ async function loginGooglePlayConsole() {
 async function uploadApp(client, lastTag) {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  // await page.setViewport({
-  //   width: 1200,
-  //   height: 800
-  // })
+  await page.setViewport({
+    width: 1200,
+    height: 800
+  })
   await page.setCookie(...cookies)
 
 
@@ -120,7 +119,7 @@ async function uploadApp(client, lastTag) {
   if (fullTextVersion.includes(lastTag)) {
 
     console.log(`${client.name} já foi atualizado nessa versão ;)`)
-    await page.screenshot({ path: `${path.resolve()}/scripts/screenshots/${client.name.replace(' ', '-')}.png` })
+    await page.screenshot({ path: `${path.resolve()}/screenshots/${client.name.replace(' ', '-')}.png` })
     // timeWait = 12000 * index
     await browser.close()
 
@@ -165,11 +164,11 @@ async function uploadApp(client, lastTag) {
     await confirmarLancamento.click()
     console.log(`${client.name} - Atualizado :)`)
     await sleep(2000)
-    await page.screenshot({ path: `${path.resolve()}/scripts/screenshots/${client.name}.png` })
+    await page.screenshot({ path: `${path.resolve()}/screenshots/${client.name}.png` })
 
   } catch (erro) {
     console.log(`${client.name} - Erro ao atulizar :(`)
-    await page.screenshot({ path: `${path.resolve()}/scripts/screenshots/${client.name}-ERROR.png` })
+    await page.screenshot({ path: `${path.resolve()}/screenshots/${client.name}-ERROR.png` })
 
   }
 

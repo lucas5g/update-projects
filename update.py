@@ -23,6 +23,7 @@ def updateWeb(accessToken, project):
     command = res.json()
     webs = command['web']
 
+    print('Atualização web\n')
     for web in webs:
         page = requests.get(web['link'])
         soup = bs(page.content, 'html.parser')
@@ -34,12 +35,12 @@ def updateWeb(accessToken, project):
             lastTagPage = soup.find('strong').text
 
         if(lastTagPage == web['lastTag']):
-            print(web['name'] + 'já foi atualizado na versão ' + lastTagPage)
+            print(web['name'] + ' já foi atualizado na versão ' + lastTagPage)
         else:
             os.system('cd ' + web['pathAuto'] + ' && ' + web['auto'])
     return
 
-def build(accessToken, project):
+def builds(accessToken, project):
     Headers = {"Authorization": "Bearer "+accessToken}
     res = requests.get(url + "/clients/pendents/" + project, headers=Headers)
     command = res.json()
@@ -61,13 +62,11 @@ def build(accessToken, project):
 
     
 
-    os.system('node scripts/apps-upload.mjs ' + project)
+    os.system('node upload.mjs ' + project)
     # os.system('node apps-upload.mjs ' + clients[0]['lastTagUser'])
     
 
 accessToken = login()
 
-# print(argv[1])
 updateWeb(accessToken, argv[1])
-build(accessToken, argv[1])
-# build('servicos')
+builds(accessToken, argv[1])
