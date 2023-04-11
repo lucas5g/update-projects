@@ -112,7 +112,15 @@ async function uploadApp(client, lastTag) {
 
 
   await page.goto(client.urlUpload)
-  const verifyVersion = await page.waitForSelector('ul.list')
+  let verifyVersion = ''
+  try{
+    verifyVersion = await page.waitForSelector('ul.list')
+  }catch(error){
+    console.log(`Confira de forma correta o link de upload do aplicativo ${client.name}.`)
+    throw  new Error('Erro ao tentar autalizar app')
+  }
+  verifyVersion = await page.waitForSelector('ul.list')
+
   const fullTextVersion = await page.evaluate(el => el.textContent, verifyVersion)
 
   // return console.log({fullTextVersion, lastTag, test: fullTextVersion.includes(lastTag)})
