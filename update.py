@@ -55,6 +55,9 @@ def builds(accessToken, project):
     Headers = {"Authorization": "Bearer "+accessToken}
     res = requests.get(url + "/clients/pendents/" + project, headers=Headers)
     command = res.json()
+    if not command:
+        return print('Projeto não cadastrado.') 
+
     clientsUser = command['androidUser']
     clientsProvider = command['androidProvider']
 
