@@ -27,21 +27,15 @@ def updateWeb(accessToken, project):
         print('Atualização web\n')
 
     for web in webs:
-        if project == 'entregas':
-            page = requests.get(web['link'] + '/version')
-        else:
-            page = requests.get(web['link'] + '/version')
 
-
+        page = requests.get(web['link'] + '/version')
+      
         soup = bs(page.content, 'html.parser')
 
         if  project == 'marketplace':
             lastTagPage =  soup.find_all('strong')[1].text
 
-        if project == 'servicos':
-            lastTagPage = soup.find('strong').text
-
-        if project == 'entregas':
+        if project == 'entregas' or project == 'services':
             lastTagPage = soup.text 
 
         if(lastTagPage == web['lastTag']):
