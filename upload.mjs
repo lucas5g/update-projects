@@ -37,9 +37,9 @@ let cookies = [];
   const clientsUser = command.androidUser
   const clientsProvider = command.androidProvider
   // return console.log(clients)
-  clientsUser.map(async (client, index) => {
-    // if(index !== 1)return
-    // console.log(os.homedir + client.pathApp)
+  clientsUser.forEach(async (client, index) => {
+  
+    if(client.name !== 'Seu Domingos') return
     if (!fs.existsSync(os.homedir + client.pathApp)) {
       console.log(`${client.name} - não foi buildado`)
       // cont++
@@ -49,13 +49,10 @@ let cookies = [];
     await sleep(seconds * 1000 * index)
     await uploadApp(client, client.lastTagUser)
   })
-
-   // return console.log(clients)
-   clientsProvider.map(async (client, index) => {
-    // console.log(os.homedir + client.pathApp)
+  return 
+   clientsProvider.forEach(async (client, index) => {
     if (!fs.existsSync(os.homedir + client.pathApp)) {
       console.log(`${client.name} - não foi buildado`)
-      // cont++
       return
     }
 
@@ -106,7 +103,7 @@ async function uploadApp(client, lastTag) {
   const page = await browser.newPage();
   await page.setViewport({
     width: 1200,
-    height: 800
+    height: 756
   })
   await page.setCookie(...cookies)
 
@@ -160,8 +157,8 @@ async function uploadApp(client, lastTag) {
   const buttonProximo = await page.waitForXPath(`(//div[text()="Próximo"])[1]`)
   await buttonProximo.click()
   
-  // const buttonAvaliar = await page.waitForXPath(`(//div[text()="Avaliar versão"])[1]`)
-  // await buttonAvaliar.click()
+  const buttonSalvar = await page.waitForXPath(`(//div[text()="Salvar"])[1]`)
+  await buttonSalvar.click()
 
   try {
     const buttonLancar = await page.waitForXPath(`//button/div[contains(., "Iniciar lançamento")]`)

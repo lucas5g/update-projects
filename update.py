@@ -78,7 +78,6 @@ def builds(accessToken, project):
     
 
     os.system('node upload.mjs ' + project)
-    # os.system('node apps-upload.mjs ' + clients[0]['lastTagUser'])
     
 
 def main():
@@ -90,6 +89,8 @@ def main():
     project=argv[1]
     platform=argv[2]
     accessToken = login()
+
+    os.system("export NODE_OPTIONS=--openssl-legacy-provider")
 
     if platform == 'web':
         updateWeb(accessToken, project)
